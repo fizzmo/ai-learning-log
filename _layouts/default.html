@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{ page.title | default: site.title }}</title>
+  <meta name="description" content="{{ page.description | default: site.description }}" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%234f46e5'/%3E%3Cpath d='M9 22V10h2.4l3.1 7.6L17.6 10H20v12h-2.1v-7.8l-2.7 6.4h-1.4l-2.7-6.4V22z' fill='%23fff'/%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="{{ '/assets/style.css' | relative_url }}" />
+  {%- feed_meta -%}
+</head>
+<body>
+  <main class="wrap">
+    <header class="masthead">
+      <h1><a href="{{ '/' | relative_url }}">{{ site.title }}</a></h1>
+      <p class="tagline">{{ site.description }}</p>
+      <div class="controls">
+        <input id="search" type="search" placeholder="Search learnings…" aria-label="Search learnings" autocomplete="off" />
+        <button id="theme-toggle" type="button" aria-label="Toggle dark mode" title="Toggle theme">◐</button>
+      </div>
+      <nav class="tagbar" aria-label="Filter by tag">
+        <button class="tag-chip active" data-tag="">All</button>
+        {%- assign tags = site.tags | sort -%}
+        {%- for tag in tags %}
+        <button class="tag-chip" data-tag="{{ tag[0] | downcase }}">#{{ tag[0] }}</button>
+        {%- endfor %}
+      </nav>
+    </header>
+
+    {{ content }}
+
+    <footer class="footer">
+      <span id="count"></span>
+      <span class="sep">·</span>
+      <span>Built with Jekyll · hosted on GitHub Pages</span>
+    </footer>
+  </main>
+
+  <script src="{{ '/assets/app.js' | relative_url }}"></script>
+</body>
+</html>

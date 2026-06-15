@@ -1,0 +1,16 @@
+title: AI Learning Log
+description: Notes, lessons, and small wins from my AI journey.
+url: "https://fizzmo.github.io"
+baseurl: "/ai-learning-log"
+
+markdown: kramdown
+permalink: /learnings/:title/
+
+# We ship our own layouts in _layouts/, so no external theme is needed.
+plugins:
+  - jekyll-feed
+
+exclude:
+  - README.md
+  - Gemfile
+  - Gemfile.lock

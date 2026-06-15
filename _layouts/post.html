@@ -1,0 +1,16 @@
+---
+layout: default
+---
+<section class="timeline">
+  <article class="entry" data-tags="{{ page.tags | join: ' ' | downcase }}">
+    <div class="entry-date">{{ page.date | date: "%b %-d, %Y" }}</div>
+    <h2 class="entry-title">{{ page.title }}</h2>
+    <div class="entry-body">{{ content }}</div>
+    {%- if page.tags.size > 0 %}
+    <div class="entry-tags">
+      {%- for t in page.tags %}<a class="entry-tag" href="{{ '/' | relative_url }}#tag={{ t | downcase }}">#{{ t }}</a>{% endfor %}
+    </div>
+    {%- endif %}
+    <p class="backlink"><a href="{{ '/' | relative_url }}">← All learnings</a></p>
+  </article>
+</section>
