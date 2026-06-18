@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AP European History — 1450 to the Present</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#100d14;
+    --bg-soft:#171320;
+    --card:#1e1929;
+    --ink:#ece8e3;
+    --muted:#a39daf;
+    --line:#332b44;
+    --accent:#c9a06c;          /* burnished bronze */
+    --p1:#e07a9b;  /* 1450–1648 · rose  */
+    --p2:#6aa9e9;  /* 1648–1815 · azure */
+    --p3:#7fc97a;  /* 1815–1914 · verdigris */
+    --p4:#efa15a;  /* 1914–present · amber */
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:'Inter',sans-serif;line-height:1.6;overflow-x:hidden}
+  ::selection{background:var(--accent);color:#16101c}
+
+  #progress{position:fixed;top:0;left:0;height:3px;width:0;z-index:100;
+    background:linear-gradient(90deg,var(--p1),var(--p2),var(--p3),var(--p4));}
+
+  nav{position:fixed;top:0;width:100%;z-index:90;display:flex;align-items:center;
+    justify-content:space-between;padding:.9rem 2rem;
+    background:rgba(16,13,20,.84);backdrop-filter:blur(12px);
+    border-bottom:1px solid rgba(255,255,255,.06)}
+  .brand{font-family:'Cormorant Garamond',serif;font-weight:700;font-size:1.2rem;letter-spacing:.02em}
+  .brand span{color:var(--accent)}
+  nav ul{display:flex;gap:1.6rem;list-style:none}
+  nav a{color:var(--muted);text-decoration:none;font-size:.85rem;font-weight:600;
+    text-transform:uppercase;letter-spacing:.1em;transition:color .2s}
+  nav a:hover{color:var(--accent)}
+
+  header{min-height:100vh;display:flex;flex-direction:column;justify-content:center;
+    align-items:center;text-align:center;position:relative;padding:6rem 1.5rem 4rem;overflow:hidden}
+  .hero-bg{position:absolute;inset:0;
+    background:
+      radial-gradient(ellipse 60% 45% at 18% 18%, rgba(224,122,155,.10), transparent 60%),
+      radial-gradient(ellipse 55% 40% at 85% 22%, rgba(106,169,233,.10), transparent 60%),
+      radial-gradient(ellipse 60% 45% at 22% 85%, rgba(127,201,122,.08), transparent 60%),
+      radial-gradient(ellipse 55% 45% at 82% 82%, rgba(239,161,90,.10), transparent 60%);}
+  /* rose window motif */
+  .rose{position:absolute;width:820px;height:820px;opacity:.07;animation:spin 240s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .kicker{font-size:.8rem;font-weight:700;letter-spacing:.35em;text-transform:uppercase;
+    color:var(--accent);margin-bottom:1.2rem;position:relative}
+  h1{font-family:'Cormorant Garamond',serif;font-weight:700;font-size:clamp(2.8rem,7.5vw,5.6rem);
+    line-height:1.04;position:relative;max-width:18ch}
+  h1 em{font-style:italic;font-weight:400;color:var(--accent)}
+  .sub{margin-top:1.4rem;max-width:48ch;color:var(--muted);font-size:1.05rem;position:relative}
+  .stats{display:flex;gap:2.8rem;margin-top:2.8rem;position:relative;flex-wrap:wrap;justify-content:center}
+  .stat{text-align:center}
+  .stat b{display:block;font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:700;color:var(--ink)}
+  .stat span{font-size:.72rem;text-transform:uppercase;letter-spacing:.18em;color:var(--muted)}
+  .scroll-cue{position:absolute;bottom:2rem;color:var(--muted);font-size:.72rem;
+    letter-spacing:.25em;text-transform:uppercase;animation:bob 2.2s ease-in-out infinite}
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(8px)}}
+
+  .filters{position:sticky;top:56px;z-index:80;display:flex;gap:.55rem;flex-wrap:wrap;
+    justify-content:center;padding:1rem 1.5rem;background:rgba(16,13,20,.9);
+    backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.05)}
+  .chip{border:1px solid var(--line);background:transparent;color:var(--muted);
+    padding:.42rem 1rem;border-radius:999px;font:600 .8rem 'Inter',sans-serif;
+    cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:.45rem}
+  .chip .dot{width:8px;height:8px;border-radius:50%;background:var(--accent)}
+  .chip[data-f="p1"] .dot{background:var(--p1)} .chip[data-f="p2"] .dot{background:var(--p2)}
+  .chip[data-f="p3"] .dot{background:var(--p3)} .chip[data-f="p4"] .dot{background:var(--p4)}
+  .chip:hover{border-color:var(--accent);color:var(--ink)}
+  .chip.active{background:var(--ink);color:#16101c;border-color:var(--ink)}
+
+  #timeline{max-width:1060px;margin:0 auto;padding:4rem 1.5rem 6rem;position:relative}
+  .spine{position:absolute;left:50%;top:0;bottom:0;width:2px;transform:translateX(-50%);
+    background:linear-gradient(180deg,transparent,var(--p1) 6%,var(--p2) 36%,var(--p3) 62%,var(--p4) 94%,transparent)}
+  .era{position:relative;text-align:center;margin:4.5rem 0 2.5rem;z-index:2}
+  .era .range{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,4.2vw,3rem);font-weight:700}
+  .era .name{font-size:.78rem;text-transform:uppercase;letter-spacing:.3em;color:var(--muted);margin-top:.3rem}
+  .era .pill{display:inline-block;margin-top:.7rem;font-size:.7rem;font-weight:700;
+    letter-spacing:.12em;text-transform:uppercase;padding:.3rem .9rem;border-radius:999px}
+  .era[data-p="p1"] .range{color:var(--p1)} .era[data-p="p2"] .range{color:var(--p2)}
+  .era[data-p="p3"] .range{color:var(--p3)} .era[data-p="p4"] .range{color:var(--p4)}
+  .era[data-p="p1"] .pill{background:rgba(224,122,155,.12);color:var(--p1)}
+  .era[data-p="p2"] .pill{background:rgba(106,169,233,.12);color:var(--p2)}
+  .era[data-p="p3"] .pill{background:rgba(127,201,122,.12);color:var(--p3)}
+  .era[data-p="p4"] .pill{background:rgba(239,161,90,.12);color:var(--p4)}
+
+  .event{position:relative;width:50%;padding:0 3rem 2.6rem;opacity:0;transform:translateY(28px);
+    transition:opacity .6s ease,transform .6s ease}
+  .event.show{opacity:1;transform:translateY(0)}
+  .event:nth-of-type(odd){left:0;text-align:right}
+  .event:nth-of-type(even){left:50%;text-align:left}
+  .event .node{position:absolute;top:14px;width:13px;height:13px;border-radius:50%;
+    background:var(--bg);border:3px solid var(--accent);z-index:3}
+  .event:nth-of-type(odd) .node{right:-7.5px}
+  .event:nth-of-type(even) .node{left:-7.5px}
+  .event[data-p="p1"] .node{border-color:var(--p1)} .event[data-p="p2"] .node{border-color:var(--p2)}
+  .event[data-p="p3"] .node{border-color:var(--p3)} .event[data-p="p4"] .node{border-color:var(--p4)}
+  .year{font-family:'Cormorant Garamond',serif;font-size:1.7rem;font-weight:700;letter-spacing:.01em}
+  .event[data-p="p1"] .year{color:var(--p1)} .event[data-p="p2"] .year{color:var(--p2)}
+  .event[data-p="p3"] .year{color:var(--p3)} .event[data-p="p4"] .year{color:var(--p4)}
+  .card{margin-top:.45rem;background:var(--card);border:1px solid var(--line);
+    border-radius:14px;padding:1.1rem 1.3rem;transition:transform .25s,border-color .25s,box-shadow .25s}
+  .event:hover .card{transform:translateY(-3px);border-color:rgba(201,160,108,.5);
+    box-shadow:0 12px 32px rgba(0,0,0,.4)}
+  .card h3{font-family:'Cormorant Garamond',serif;font-size:1.28rem;font-weight:700;margin-bottom:.3rem}
+  .card p{font-size:.88rem;color:var(--muted)}
+  .tag{display:inline-block;margin-top:.65rem;font-size:.66rem;font-weight:700;
+    letter-spacing:.12em;text-transform:uppercase;padding:.22rem .65rem;border-radius:6px}
+  .event[data-p="p1"] .tag{background:rgba(224,122,155,.12);color:var(--p1)}
+  .event[data-p="p2"] .tag{background:rgba(106,169,233,.12);color:var(--p2)}
+  .event[data-p="p3"] .tag{background:rgba(127,201,122,.12);color:var(--p3)}
+  .event[data-p="p4"] .tag{background:rgba(239,161,90,.12);color:var(--p4)}
+  .hidden{display:none}
+
+  section{max-width:1060px;margin:0 auto;padding:5rem 1.5rem}
+  .sec-head{text-align:center;margin-bottom:3rem}
+  .sec-head h2{font-family:'Cormorant Garamond',serif;font-size:clamp(2.1rem,4.2vw,3rem);font-weight:700}
+  .sec-head p{color:var(--muted);margin-top:.6rem;max-width:52ch;margin-inline:auto}
+  .units{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.1rem}
+  .unit{background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:1.4rem 1.5rem;position:relative;overflow:hidden;transition:transform .25s,border-color .25s}
+  .unit:hover{transform:translateY(-4px);border-color:rgba(201,160,108,.5)}
+  .unit::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--ac)}
+  .unit .num{font-family:'Cormorant Garamond',serif;font-size:2.6rem;font-weight:700;color:var(--ac);opacity:.9;line-height:1}
+  .unit h3{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:700;margin:.5rem 0 .3rem}
+  .unit .meta{font-size:.72rem;text-transform:uppercase;letter-spacing:.14em;color:var(--muted)}
+  .unit p{font-size:.86rem;color:var(--muted);margin-top:.55rem}
+  .themes{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:1.1rem}
+  .theme{border:1px solid var(--line);border-radius:14px;padding:1.3rem 1.4rem;background:var(--bg-soft)}
+  .theme .icon{font-size:1.5rem}
+  .theme h3{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:700;margin:.5rem 0 .25rem}
+  .theme p{font-size:.85rem;color:var(--muted)}
+
+  footer{border-top:1px solid var(--line);padding:2.5rem 1.5rem;text-align:center;
+    color:var(--muted);font-size:.82rem}
+  footer b{color:var(--accent);font-family:'Cormorant Garamond',serif;font-size:1rem}
+
+  @media(max-width:760px){
+    nav ul{display:none}
+    .spine{left:18px}
+    .event{width:100%;left:0 !important;text-align:left !important;padding:0 0 2.2rem 3.2rem}
+    .event .node{left:11px !important;right:auto !important}
+    .era{text-align:left;padding-left:3.2rem}
+  }
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+
+<nav>
+  <div class="brand">AP European<span> History</span></div>
+  <ul>
+    <li><a href="#timeline">Timeline</a></li>
+    <li><a href="#units">Units</a></li>
+    <li><a href="#themes">Themes</a></li>
+  </ul>
+</nav>
+
+<header>
+  <div class="hero-bg"></div>
+  <svg class="rose" viewBox="0 0 100 100" fill="none" stroke="#c9a06c" stroke-width=".3">
+    <circle cx="50" cy="50" r="48"/><circle cx="50" cy="50" r="40"/><circle cx="50" cy="50" r="14"/>
+    <g>
+      <ellipse cx="50" cy="26" rx="7" ry="13"/><ellipse cx="50" cy="74" rx="7" ry="13"/>
+      <ellipse cx="26" cy="50" rx="13" ry="7"/><ellipse cx="74" cy="50" rx="13" ry="7"/>
+      <ellipse cx="33" cy="33" rx="7" ry="13" transform="rotate(-45 33 33)"/>
+      <ellipse cx="67" cy="33" rx="7" ry="13" transform="rotate(45 67 33)"/>
+      <ellipse cx="33" cy="67" rx="7" ry="13" transform="rotate(45 33 67)"/>
+      <ellipse cx="67" cy="67" rx="7" ry="13" transform="rotate(-45 67 67)"/>
+    </g>
+    <path d="M50 2v10M50 88v10M2 50h10M88 50h10M16 16l7 7M77 77l7 7M84 16l-7 7M23 77l-7 7"/>
+  </svg>
+  <div class="kicker">c. 1450 — Present</div>
+  <h1>From the Renaissance to a <em>united Europe</em></h1>
+  <p class="sub">Printing presses and plague, absolutism and enlightenment, revolution and
+    reaction, two world wars and one fragile union — the story of modern Europe,
+    organized around the AP European History course framework.</p>
+  <div class="stats">
+    <div class="stat"><b>4</b><span>Periods</span></div>
+    <div class="stat"><b>9</b><span>Units</span></div>
+    <div class="stat"><b>7</b><span>Themes</span></div>
+    <div class="stat"><b>575+</b><span>Years</span></div>
+  </div>
+  <div class="scroll-cue">▼ Scroll the centuries</div>
+</header>
+
+<div class="filters" id="filters">
+  <button class="chip active" data-f="all"><span class="dot" style="background:linear-gradient(90deg,var(--p1),var(--p4))"></span>All Periods</button>
+  <button class="chip" data-f="p1"><span class="dot"></span>1450–1648</button>
+  <button class="chip" data-f="p2"><span class="dot"></span>1648–1815</button>
+  <button class="chip" data-f="p3"><span class="dot"></span>1815–1914</button>
+  <button class="chip" data-f="p4"><span class="dot"></span>1914–Present</button>
+</div>
+
+<div id="timeline">
+  <div class="spine"></div>
+
+  <div class="era" data-p="p1">
+    <div class="range">1450 – 1648</div>
+    <div class="name">Period 1 · Renaissance, Exploration &amp; Reformation</div>
+    <span class="pill">Units 1–2 · ~20–30% of exam</span>
+  </div>
+
+  <div class="event" data-p="p1"><span class="node"></span><div class="year">c. 1455</div>
+    <div class="card"><h3>Gutenberg Prints the Bible</h3>
+    <p>Movable type makes books cheap and ideas unstoppable. Without the press, no Reformation, no Scientific Revolution, no Enlightenment.</p>
+    <span class="tag">Unit 1 · Renaissance &amp; Exploration</span></div></div>
+
+  <div class="event" data-p="p1"><span class="node"></span><div class="year">1453</div>
+    <div class="card"><h3>Constantinople Falls to the Ottomans</h3>
+    <p>Greek scholars and manuscripts flow west, feeding Italian humanism — while the Ottoman threat reshapes European diplomacy for centuries.</p>
+    <span class="tag">Unit 1 · Renaissance &amp; Exploration</span></div></div>
+
+  <div class="event" data-p="p1"><span class="node"></span><div class="year">1492</div>
+    <div class="card"><h3>Columbus Sails; the Reconquista Ends</h3>
+    <p>Spain completes the Reconquista, expels its Jews, and bankrolls a westward voyage — launching the Columbian Exchange and Europe's overseas empires.</p>
+    <span class="tag">Unit 1 · Renaissance &amp; Exploration</span></div></div>
+
+  <div class="event" data-p="p1"><span class="node"></span><div class="year">1508</div>
+    <div class="card"><h3>Michelangelo Begins the Sistine Ceiling</h3>
+    <p>The High Renaissance peaks in Rome: classical form, humanist confidence, and papal patronage — art as both devotion and propaganda.</p>
+    <span class="tag">Unit 1 · Renaissance &amp; Exploration</span></div></div>
+
+  <div class="event" data-p="p1"><span class="node"></span><div class="year">1513</div>
+    <div class="card"><h3>Machiavelli Writes The Prince</h3>
+    <p>Politics divorced from morality: better to be feared than loved. A new, secular science of power is born in exile outside Florence.</p>
+    <span class="tag">Unit 1 · Renaissance &amp; Exploration</span></div></div>
+
+  <div class="event" data-p="p1"><span class="node"></span><div class="year">1517</div>
+    <div class="card"><h3>Luther's Ninety-Five Theses</h3>
+    <p>A dispute over indulgences shatters Western Christendom. Sola fide, sola scriptura — and a media campaign the papacy cannot contain.</p>
+    <span class="tag">Unit 2 · Age of Reformation</span></div></div>
+
+  <div class="event" data-p="p1"><span class="node"></span><div class="year">1534</div>
+    <div class="card"><h3>Henry VIII's Act of Supremacy</h3>
+    <p>England leaves Rome over an annulment. The crown seizes the monasteries, and religion becomes an instrument of state power.</p>
+    <span class="tag">Unit 2 · Age of Reformation</span></div></div>
+
+  <div class="event" data-p="p1"><span class="node"></span><div class="year">1536</div>
+    <div class="card"><h3>Calvin Publishes the Institutes</h3>
+    <p>Predestination, discipline, and the godly community of Geneva — Calvinism becomes the Reformation's most international and militant wing.</p>
+    <span class="tag">Unit 2 · Age of Reformation</span></div></div>
+
+  <div class="event" data-p="p1"><span class="node"></span><div class="year">1545</div>
+    <div class="card"><h3>The Council of Trent Convenes</h3>
+    <p>The Catholic Reformation answers: doctrine reaffirmed, abuses reformed, seminaries founded — and the Jesuits carry the faith worldwide.</p>
+    <span class="tag">Unit 2 · Age of Reformation</span></div></div>
+
+  <div class="event" data-p="p1"><span class="node"></span><div class="year">1555</div>
+    <div class="card"><h3>The Peace of Augsburg</h3>
+    <p><em>Cuius regio, eius religio</em> — each prince chooses his territory's faith. A truce, not a solution; it ignores Calvinists entirely.</p>
+    <span class="tag">Unit 2 · Age of Reformation</span></div></div>
+
+  <div class="event" data-p="p1"><span class="node"></span><div class="year">1588</div>
+    <div class="card"><h3>Defeat of the Spanish Armada</h3>
+    <p>Storms and English seamanship wreck Philip II's invasion fleet — Protestant England survives, and Atlantic power begins shifting north.</p>
+    <span class="tag">Unit 1 · Renaissance &amp; Exploration</span></div></div>
+
+  <div class="event" data-p="p1"><span class="node"></span><div class="year">1618</div>
+    <div class="card"><h3>The Thirty Years' War Begins</h3>
+    <p>A defenestration in Prague ignites Europe's deadliest religious war — devastating the German lands and drawing in every major power.</p>
+    <span class="tag">Unit 2 · Age of Reformation</span></div></div>
+
+  <div class="event" data-p="p1"><span class="node"></span><div class="year">1648</div>
+    <div class="card"><h3>The Peace of Westphalia</h3>
+    <p>Religious war ends in exhaustion. Sovereign states, not faiths, become the units of European politics — the modern state system is born.</p>
+    <span class="tag">Unit 2 · Age of Reformation</span></div></div>
+
+  <div class="era" data-p="p2">
+    <div class="range">1648 – 1815</div>
+    <div class="name">Period 2 · Absolutism, Enlightenment &amp; Revolution</div>
+    <span class="pill">Units 3–5 · ~30–45% of exam</span>
+  </div>
+
+  <div class="event" data-p="p2"><span class="node"></span><div class="year">1649</div>
+    <div class="card"><h3>Execution of Charles I</h3>
+    <p>The English Civil War ends with a king beheaded by his own parliament — a shocking precedent that monarchs across Europe never forget.</p>
+    <span class="tag">Unit 3 · Absolutism &amp; Constitutionalism</span></div></div>
+
+  <div class="event" data-p="p2"><span class="node"></span><div class="year">1661</div>
+    <div class="card"><h3>Louis XIV's Personal Rule Begins</h3>
+    <p>"L'état, c'est moi." Versailles, Colbert's mercantilism, and a domesticated nobility — absolutism finds its model and its sun.</p>
+    <span class="tag">Unit 3 · Absolutism &amp; Constitutionalism</span></div></div>
+
+  <div class="event" data-p="p2"><span class="node"></span><div class="year">1687</div>
+    <div class="card"><h3>Newton's Principia Mathematica</h3>
+    <p>One set of laws governs apples and planets alike. The Scientific Revolution peaks — and a clockwork universe invites rational reform of everything else.</p>
+    <span class="tag">Unit 4 · Scientific &amp; Philosophical Developments</span></div></div>
+
+  <div class="event" data-p="p2"><span class="node"></span><div class="year">1688</div>
+    <div class="card"><h3>The Glorious Revolution</h3>
+    <p>England replaces its king almost bloodlessly; the Bill of Rights and Locke's contract theory make constitutionalism a living alternative to absolutism.</p>
+    <span class="tag">Unit 3 · Absolutism &amp; Constitutionalism</span></div></div>
+
+  <div class="event" data-p="p2"><span class="node"></span><div class="year">1703</div>
+    <div class="card"><h3>Peter the Great Founds St. Petersburg</h3>
+    <p>A "window on the West" built on a swamp: Russia westernizes by decree — beards taxed, nobles drilled, an empire turned toward Europe.</p>
+    <span class="tag">Unit 3 · Absolutism &amp; Constitutionalism</span></div></div>
+
+  <div class="event" data-p="p2"><span class="node"></span><div class="year">1751</div>
+    <div class="card"><h3>Diderot's Encyclopédie</h3>
+    <p>The Enlightenment between two covers: 28 volumes to "change the general way of thinking" — reason, tolerance, and progress against throne and altar.</p>
+    <span class="tag">Unit 4 · Scientific &amp; Philosophical Developments</span></div></div>
+
+  <div class="event" data-p="p2"><span class="node"></span><div class="year">1756</div>
+    <div class="card"><h3>The Seven Years' War</h3>
+    <p>The first truly global war — fought in Europe, America, and India. Britain wins an empire; France's debts plant the seeds of revolution.</p>
+    <span class="tag">Unit 5 · Conflict, Crisis &amp; Reaction</span></div></div>
+
+  <div class="event" data-p="p2"><span class="node"></span><div class="year">1789</div>
+    <div class="card"><h3>The French Revolution Begins</h3>
+    <p>The Estates-General becomes a National Assembly; the Bastille falls. Liberty, equality, fraternity — and the end of the Old Regime.</p>
+    <span class="tag">Unit 5 · Conflict, Crisis &amp; Reaction</span></div></div>
+
+  <div class="event" data-p="p2"><span class="node"></span><div class="year">1793</div>
+    <div class="card"><h3>The Reign of Terror</h3>
+    <p>Robespierre's Committee of Public Safety defends the revolution with the guillotine — until the revolution devours its own children.</p>
+    <span class="tag">Unit 5 · Conflict, Crisis &amp; Reaction</span></div></div>
+
+  <div class="event" data-p="p2"><span class="node"></span><div class="year">1804</div>
+    <div class="card"><h3>Napoleon Crowns Himself Emperor</h3>
+    <p>The revolution's general becomes its monarch. His Code and conquests export revolutionary ideas — and provoke the nationalism that undoes him.</p>
+    <span class="tag">Unit 5 · Conflict, Crisis &amp; Reaction</span></div></div>
+
+  <div class="event" data-p="p2"><span class="node"></span><div class="year">1815</div>
+    <div class="card"><h3>The Congress of Vienna</h3>
+    <p>Metternich and the victors redraw Europe for balance and legitimacy. The Concert of Europe keeps general peace for nearly forty years.</p>
+    <span class="tag">Unit 5 · Conflict, Crisis &amp; Reaction</span></div></div>
+
+  <div class="era" data-p="p3">
+    <div class="range">1815 – 1914</div>
+    <div class="name">Period 3 · Industrialization &amp; the Age of -Isms</div>
+    <span class="pill">Units 6–7 · ~20–30% of exam</span>
+  </div>
+
+  <div class="event" data-p="p3"><span class="node"></span><div class="year">1830s</div>
+    <div class="card"><h3>Railways Transform Britain</h3>
+    <p>Steam, coal, and iron remake time and space. Industrialization spreads to Belgium, France, and the German lands — with factories, slums, and a new working class.</p>
+    <span class="tag">Unit 6 · Industrialization &amp; Its Effects</span></div></div>
+
+  <div class="event" data-p="p3"><span class="node"></span><div class="year">1848</div>
+    <div class="card"><h3>The Revolutions of 1848</h3>
+    <p>Liberal and nationalist uprisings sweep Paris, Vienna, Berlin, and Budapest — then collapse. The same year, Marx and Engels publish the Communist Manifesto.</p>
+    <span class="tag">Unit 7 · 19th-Century Perspectives</span></div></div>
+
+  <div class="event" data-p="p3"><span class="node"></span><div class="year">1859</div>
+    <div class="card"><h3>Darwin's On the Origin of Species</h3>
+    <p>Natural selection unsettles religion and feeds new ideologies — including the Social Darwinism later used to justify empire and inequality.</p>
+    <span class="tag">Unit 7 · 19th-Century Perspectives</span></div></div>
+
+  <div class="event" data-p="p3"><span class="node"></span><div class="year">1861</div>
+    <div class="card"><h3>Italy Unifies</h3>
+    <p>Cavour's diplomacy and Garibaldi's Red Shirts stitch the peninsula together under Piedmont — realpolitik triumphs where 1848's idealism failed.</p>
+    <span class="tag">Unit 7 · 19th-Century Perspectives</span></div></div>
+
+  <div class="event" data-p="p3"><span class="node"></span><div class="year">1871</div>
+    <div class="card"><h3>Germany Unifies at Versailles</h3>
+    <p>Bismarck's "blood and iron" — three quick wars — forge the German Empire, proclaimed in France's own palace. Europe's balance of power tilts permanently.</p>
+    <span class="tag">Unit 7 · 19th-Century Perspectives</span></div></div>
+
+  <div class="event" data-p="p3"><span class="node"></span><div class="year">1884</div>
+    <div class="card"><h3>The Berlin Conference</h3>
+    <p>The New Imperialism at full speed: European powers partition Africa for markets, materials, and prestige — with consequences that still echo.</p>
+    <span class="tag">Unit 6 · Industrialization &amp; Its Effects</span></div></div>
+
+  <div class="event" data-p="p3"><span class="node"></span><div class="year">1894</div>
+    <div class="card"><h3>The Dreyfus Affair</h3>
+    <p>A Jewish officer falsely convicted of treason splits France in two — exposing modern antisemitism and the power of the press and public opinion.</p>
+    <span class="tag">Unit 7 · 19th-Century Perspectives</span></div></div>
+
+  <div class="event" data-p="p3"><span class="node"></span><div class="year">1905</div>
+    <div class="card"><h3>Russia's First Revolution</h3>
+    <p>Defeat by Japan and Bloody Sunday force Nicholas II to grant a Duma — a rehearsal, as it turns out, for 1917.</p>
+    <span class="tag">Unit 7 · 19th-Century Perspectives</span></div></div>
+
+  <div class="era" data-p="p4">
+    <div class="range">1914 – Present</div>
+    <div class="name">Period 4 · Global Conflict, Cold War &amp; Integration</div>
+    <span class="pill">Units 8–9 · ~20–30% of exam</span>
+  </div>
+
+  <div class="event" data-p="p4"><span class="node"></span><div class="year">1914</div>
+    <div class="card"><h3>The Great War Begins</h3>
+    <p>Alliances, mobilization timetables, and an assassination in Sarajevo drag Europe into industrial total war — trenches, gas, and a lost generation.</p>
+    <span class="tag">Unit 8 · 20th-Century Global Conflicts</span></div></div>
+
+  <div class="event" data-p="p4"><span class="node"></span><div class="year">1917</div>
+    <div class="card"><h3>The Russian Revolutions</h3>
+    <p>February topples the tsar; October brings Lenin's Bolsheviks to power. Russia exits the war and becomes the world's first communist state.</p>
+    <span class="tag">Unit 8 · 20th-Century Global Conflicts</span></div></div>
+
+  <div class="event" data-p="p4"><span class="node"></span><div class="year">1919</div>
+    <div class="card"><h3>The Treaty of Versailles</h3>
+    <p>War guilt, reparations, and redrawn borders. The peace satisfies no one — and Keynes predicts it will breed the next catastrophe.</p>
+    <span class="tag">Unit 8 · 20th-Century Global Conflicts</span></div></div>
+
+  <div class="event" data-p="p4"><span class="node"></span><div class="year">1933</div>
+    <div class="card"><h3>Hitler Comes to Power</h3>
+    <p>Depression, resentment, and conservative miscalculation hand Germany to the Nazis. Within months, democracy is dismantled by legal means.</p>
+    <span class="tag">Unit 8 · 20th-Century Global Conflicts</span></div></div>
+
+  <div class="event" data-p="p4"><span class="node"></span><div class="year">1939</div>
+    <div class="card"><h3>World War II Begins</h3>
+    <p>Appeasement fails; Germany invades Poland. Total war returns — and with it the Holocaust, the systematic murder of six million Jews.</p>
+    <span class="tag">Unit 8 · 20th-Century Global Conflicts</span></div></div>
+
+  <div class="event" data-p="p4"><span class="node"></span><div class="year">1945</div>
+    <div class="card"><h3>Year Zero: Europe Divided</h3>
+    <p>The Reich falls; Yalta and Potsdam split the continent. An Iron Curtain descends from Stettin to Trieste, and two superpowers face off across it.</p>
+    <span class="tag">Unit 9 · Cold War &amp; Contemporary Europe</span></div></div>
+
+  <div class="event" data-p="p4"><span class="node"></span><div class="year">1948</div>
+    <div class="card"><h3>The Marshall Plan &amp; Berlin Airlift</h3>
+    <p>American dollars rebuild the West; Allied planes defy Stalin's blockade. The Cold War's front line runs straight through Berlin.</p>
+    <span class="tag">Unit 9 · Cold War &amp; Contemporary Europe</span></div></div>
+
+  <div class="event" data-p="p4"><span class="node"></span><div class="year">1957</div>
+    <div class="card"><h3>The Treaty of Rome</h3>
+    <p>Six nations create the European Economic Community — the wager that economic integration can make another European war impossible.</p>
+    <span class="tag">Unit 9 · Cold War &amp; Contemporary Europe</span></div></div>
+
+  <div class="event" data-p="p4"><span class="node"></span><div class="year">1968</div>
+    <div class="card"><h3>The Prague Spring Crushed</h3>
+    <p>Dubček's "socialism with a human face" is rolled over by Warsaw Pact tanks — the Brezhnev Doctrine makes Soviet control explicit.</p>
+    <span class="tag">Unit 9 · Cold War &amp; Contemporary Europe</span></div></div>
+
+  <div class="event" data-p="p4"><span class="node"></span><div class="year">1989</div>
+    <div class="card"><h3>The Berlin Wall Falls</h3>
+    <p>Solidarity in Poland, picnics on the Hungarian border, candles in Leipzig — and one November night, the Wall opens. The bloc dissolves peacefully.</p>
+    <span class="tag">Unit 9 · Cold War &amp; Contemporary Europe</span></div></div>
+
+  <div class="event" data-p="p4"><span class="node"></span><div class="year">1993</div>
+    <div class="card"><h3>The Maastricht Treaty Creates the EU</h3>
+    <p>From common market to political union: EU citizenship, a path to the euro, and eastward enlargement to the post-communist states.</p>
+    <span class="tag">Unit 9 · Cold War &amp; Contemporary Europe</span></div></div>
+
+  <div class="event" data-p="p4"><span class="node"></span><div class="year">2016</div>
+    <div class="card"><h3>Brexit</h3>
+    <p>Britain votes to leave the EU — nationalism, sovereignty, and migration anxieties test the integration project's limits in the 21st century.</p>
+    <span class="tag">Unit 9 · Cold War &amp; Contemporary Europe</span></div></div>
+</div>
+
+<section id="units">
+  <div class="sec-head">
+    <h2>The Nine Units</h2>
+    <p>The course framework at a glance — each unit carries roughly 10–15% of the AP exam.</p>
+  </div>
+  <div class="units">
+    <div class="unit" style="--ac:var(--p1)"><div class="num">1</div><h3>Renaissance &amp; Exploration</h3><div class="meta">1450–1648 · 10–15%</div><p>Italian and Northern humanism, Renaissance art, the printing press, and Europe's first overseas empires.</p></div>
+    <div class="unit" style="--ac:var(--p1)"><div class="num">2</div><h3>Age of Reformation</h3><div class="meta">1450–1648 · 10–15%</div><p>Luther, Calvin, and Henry VIII; the Catholic response; and the wars of religion through Westphalia.</p></div>
+    <div class="unit" style="--ac:var(--p2)"><div class="num">3</div><h3>Absolutism &amp; Constitutionalism</h3><div class="meta">1648–1815 · 10–15%</div><p>Louis XIV versus the English model; Peter the Great; mercantilism, the Dutch Golden Age, and balance-of-power politics.</p></div>
+    <div class="unit" style="--ac:var(--p2)"><div class="num">4</div><h3>Scientific &amp; Philosophical Developments</h3><div class="meta">1648–1815 · 10–15%</div><p>The Scientific Revolution and the Enlightenment — Newton, Locke, Voltaire, Rousseau, and enlightened despots.</p></div>
+    <div class="unit" style="--ac:var(--p2)"><div class="num">5</div><h3>Conflict, Crisis &amp; Reaction</h3><div class="meta">1648–1815 · 10–15%</div><p>The Seven Years' War, the French Revolution, Napoleon's empire, and the conservative settlement at Vienna.</p></div>
+    <div class="unit" style="--ac:var(--p3)"><div class="num">6</div><h3>Industrialization &amp; Its Effects</h3><div class="meta">1815–1914 · 10–15%</div><p>Steam and steel, urbanization and class, reform movements, and the New Imperialism's scramble for the globe.</p></div>
+    <div class="unit" style="--ac:var(--p3)"><div class="num">7</div><h3>19th-Century Perspectives</h3><div class="meta">1815–1914 · 10–15%</div><p>The age of -isms: liberalism, nationalism, socialism, romanticism, realism — and the unifications of Italy and Germany.</p></div>
+    <div class="unit" style="--ac:var(--p4)"><div class="num">8</div><h3>20th-Century Global Conflicts</h3><div class="meta">1914–present · 10–15%</div><p>Two world wars, the Russian Revolution, fascism and the Depression, and the Holocaust.</p></div>
+    <div class="unit" style="--ac:var(--p4)"><div class="num">9</div><h3>Cold War &amp; Contemporary Europe</h3><div class="meta">1914–present · 10–15%</div><p>A divided continent, decolonization, 1989's peaceful revolutions, and the European Union's promise and strains.</p></div>
+  </div>
+</section>
+
+<section id="themes">
+  <div class="sec-head">
+    <h2>Seven Course Themes</h2>
+    <p>The lenses the exam expects you to apply across all four periods.</p>
+  </div>
+  <div class="themes">
+    <div class="theme"><div class="icon">🌐</div><h3>Interaction of Europe &amp; the World (INT)</h3><p>Exploration, colonization, imperialism, and decolonization — Europe abroad, and the world's effect on Europe.</p></div>
+    <div class="theme"><div class="icon">💰</div><h3>Economic &amp; Commercial Developments (ECD)</h3><p>From mercantilism to industrial capitalism to the welfare state and the single market.</p></div>
+    <div class="theme"><div class="icon">📜</div><h3>Cultural &amp; Intellectual Developments (CID)</h3><p>Humanism, the Enlightenment, romanticism, modernism — how Europeans understood themselves and their world.</p></div>
+    <div class="theme"><div class="icon">👑</div><h3>States &amp; Other Institutions of Power (SOP)</h3><p>Absolutism, constitutionalism, total war, totalitarianism, and supranational union.</p></div>
+    <div class="theme"><div class="icon">🏘️</div><h3>Social Organization &amp; Development (SCD)</h3><p>Family, class, gender, and the transformations wrought by plague, industry, and war.</p></div>
+    <div class="theme"><div class="icon">🚩</div><h3>National &amp; European Identity (NEI)</h3><p>Nationalism's rise, its catastrophes, and the contested idea of a shared European identity.</p></div>
+    <div class="theme"><div class="icon">🔬</div><h3>Technological &amp; Scientific Innovation (TSI)</h3><p>The printing press, the Scientific Revolution, industrial technology, and the digital age.</p></div>
+  </div>
+</section>
+
+<footer>
+  <b>AP European History</b> · Study companion · Built for exploration, not affiliated with the College Board
+</footer>
+
+<script>
+  const bar = document.getElementById('progress');
+  addEventListener('scroll', () => {
+    const h = document.documentElement;
+    bar.style.width = (h.scrollTop / (h.scrollHeight - h.clientHeight) * 100) + '%';
+  }, {passive:true});
+
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('show'); io.unobserve(e.target); }
+  }), {threshold:.15});
+  document.querySelectorAll('.event').forEach(el => io.observe(el));
+
+  const chips = document.querySelectorAll('.chip');
+  chips.forEach(chip => chip.addEventListener('click', () => {
+    chips.forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    const f = chip.dataset.f;
+    document.querySelectorAll('.event, .era').forEach(el => {
+      const match = f === 'all' || el.dataset.p === f;
+      el.classList.toggle('hidden', !match);
+      if (match && el.classList.contains('event')) el.classList.add('show');
+    });
+  }));
+</script>
+</body>
+</html>

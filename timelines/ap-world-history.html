@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AP World History: Modern — 1200 CE to the Present</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,600;9..144,900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0d1117;
+    --bg-soft:#131a24;
+    --card:#1a2230;
+    --ink:#e8e6e1;
+    --muted:#9aa4b2;
+    --line:#2b3648;
+    --gold:#d4a843;
+    --p1:#3ecfb2;  /* 1200–1450 */
+    --p2:#e3b341;  /* 1450–1750 */
+    --p3:#f0726d;  /* 1750–1900 */
+    --p4:#a78bfa;  /* 1900–present */
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:'Inter',sans-serif;line-height:1.6;overflow-x:hidden}
+  ::selection{background:var(--gold);color:#111}
+
+  /* ---------- progress bar ---------- */
+  #progress{position:fixed;top:0;left:0;height:3px;width:0;z-index:100;
+    background:linear-gradient(90deg,var(--p1),var(--p2),var(--p3),var(--p4));}
+
+  /* ---------- nav ---------- */
+  nav{position:fixed;top:0;width:100%;z-index:90;display:flex;align-items:center;
+    justify-content:space-between;padding:.9rem 2rem;
+    background:rgba(13,17,23,.82);backdrop-filter:blur(12px);
+    border-bottom:1px solid rgba(255,255,255,.06)}
+  .brand{font-family:'Fraunces',serif;font-weight:900;font-size:1.05rem;letter-spacing:.02em}
+  .brand span{color:var(--gold)}
+  nav ul{display:flex;gap:1.6rem;list-style:none}
+  nav a{color:var(--muted);text-decoration:none;font-size:.85rem;font-weight:600;
+    text-transform:uppercase;letter-spacing:.1em;transition:color .2s}
+  nav a:hover{color:var(--gold)}
+
+  /* ---------- hero ---------- */
+  header{min-height:100vh;display:flex;flex-direction:column;justify-content:center;
+    align-items:center;text-align:center;position:relative;padding:6rem 1.5rem 4rem;overflow:hidden}
+  .hero-bg{position:absolute;inset:0;
+    background:
+      radial-gradient(ellipse 60% 45% at 20% 15%, rgba(62,207,178,.10), transparent 60%),
+      radial-gradient(ellipse 55% 40% at 85% 25%, rgba(227,179,65,.10), transparent 60%),
+      radial-gradient(ellipse 60% 45% at 25% 85%, rgba(240,114,109,.09), transparent 60%),
+      radial-gradient(ellipse 55% 45% at 80% 80%, rgba(167,139,250,.10), transparent 60%);}
+  .compass{position:absolute;width:780px;height:780px;opacity:.06;animation:spin 180s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .kicker{font-size:.8rem;font-weight:700;letter-spacing:.35em;text-transform:uppercase;
+    color:var(--gold);margin-bottom:1.2rem;position:relative}
+  h1{font-family:'Fraunces',serif;font-weight:900;font-size:clamp(2.6rem,7vw,5.2rem);
+    line-height:1.05;position:relative;max-width:18ch}
+  h1 em{font-style:italic;font-weight:300;color:var(--gold)}
+  .sub{margin-top:1.4rem;max-width:46ch;color:var(--muted);font-size:1.05rem;position:relative}
+  .stats{display:flex;gap:2.8rem;margin-top:2.8rem;position:relative;flex-wrap:wrap;justify-content:center}
+  .stat{text-align:center}
+  .stat b{display:block;font-family:'Fraunces',serif;font-size:2rem;font-weight:600;color:var(--ink)}
+  .stat span{font-size:.72rem;text-transform:uppercase;letter-spacing:.18em;color:var(--muted)}
+  .scroll-cue{position:absolute;bottom:2rem;color:var(--muted);font-size:.72rem;
+    letter-spacing:.25em;text-transform:uppercase;animation:bob 2.2s ease-in-out infinite}
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(8px)}}
+
+  /* ---------- filters ---------- */
+  .filters{position:sticky;top:56px;z-index:80;display:flex;gap:.55rem;flex-wrap:wrap;
+    justify-content:center;padding:1rem 1.5rem;background:rgba(13,17,23,.88);
+    backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.05)}
+  .chip{border:1px solid var(--line);background:transparent;color:var(--muted);
+    padding:.42rem 1rem;border-radius:999px;font:600 .8rem 'Inter',sans-serif;
+    cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:.45rem}
+  .chip .dot{width:8px;height:8px;border-radius:50%;background:var(--gold)}
+  .chip[data-f="p1"] .dot{background:var(--p1)} .chip[data-f="p2"] .dot{background:var(--p2)}
+  .chip[data-f="p3"] .dot{background:var(--p3)} .chip[data-f="p4"] .dot{background:var(--p4)}
+  .chip:hover{border-color:var(--gold);color:var(--ink)}
+  .chip.active{background:var(--ink);color:#10141b;border-color:var(--ink)}
+
+  /* ---------- timeline ---------- */
+  #timeline{max-width:1060px;margin:0 auto;padding:4rem 1.5rem 6rem;position:relative}
+  .spine{position:absolute;left:50%;top:0;bottom:0;width:2px;transform:translateX(-50%);
+    background:linear-gradient(180deg,transparent,var(--p1) 6%,var(--p2) 38%,var(--p3) 64%,var(--p4) 94%,transparent)}
+  .era{position:relative;text-align:center;margin:4.5rem 0 2.5rem;z-index:2}
+  .era .range{font-family:'Fraunces',serif;font-size:clamp(1.8rem,4vw,2.7rem);font-weight:900}
+  .era .name{font-size:.78rem;text-transform:uppercase;letter-spacing:.3em;color:var(--muted);margin-top:.3rem}
+  .era .pill{display:inline-block;margin-top:.7rem;font-size:.7rem;font-weight:700;
+    letter-spacing:.12em;text-transform:uppercase;padding:.3rem .9rem;border-radius:999px}
+  .era[data-p="p1"] .range{color:var(--p1)} .era[data-p="p2"] .range{color:var(--p2)}
+  .era[data-p="p3"] .range{color:var(--p3)} .era[data-p="p4"] .range{color:var(--p4)}
+  .era[data-p="p1"] .pill{background:rgba(62,207,178,.12);color:var(--p1)}
+  .era[data-p="p2"] .pill{background:rgba(227,179,65,.12);color:var(--p2)}
+  .era[data-p="p3"] .pill{background:rgba(240,114,109,.12);color:var(--p3)}
+  .era[data-p="p4"] .pill{background:rgba(167,139,250,.12);color:var(--p4)}
+
+  .event{position:relative;width:50%;padding:0 3rem 2.6rem;opacity:0;transform:translateY(28px);
+    transition:opacity .6s ease,transform .6s ease}
+  .event.show{opacity:1;transform:translateY(0)}
+  .event:nth-of-type(odd){left:0;text-align:right}
+  .event:nth-of-type(even){left:50%;text-align:left}
+  .event .node{position:absolute;top:14px;width:13px;height:13px;border-radius:50%;
+    background:var(--bg);border:3px solid var(--gold);z-index:3}
+  .event:nth-of-type(odd) .node{right:-7.5px}
+  .event:nth-of-type(even) .node{left:-7.5px}
+  .event[data-p="p1"] .node{border-color:var(--p1)} .event[data-p="p2"] .node{border-color:var(--p2)}
+  .event[data-p="p3"] .node{border-color:var(--p3)} .event[data-p="p4"] .node{border-color:var(--p4)}
+  .year{font-family:'Fraunces',serif;font-size:1.5rem;font-weight:600;letter-spacing:.01em}
+  .event[data-p="p1"] .year{color:var(--p1)} .event[data-p="p2"] .year{color:var(--p2)}
+  .event[data-p="p3"] .year{color:var(--p3)} .event[data-p="p4"] .year{color:var(--p4)}
+  .card{margin-top:.45rem;background:var(--card);border:1px solid var(--line);
+    border-radius:14px;padding:1.1rem 1.3rem;transition:transform .25s,border-color .25s,box-shadow .25s}
+  .event:hover .card{transform:translateY(-3px);border-color:rgba(212,168,67,.5);
+    box-shadow:0 12px 32px rgba(0,0,0,.35)}
+  .card h3{font-family:'Fraunces',serif;font-size:1.12rem;font-weight:600;margin-bottom:.35rem}
+  .card p{font-size:.88rem;color:var(--muted)}
+  .tag{display:inline-block;margin-top:.65rem;font-size:.66rem;font-weight:700;
+    letter-spacing:.12em;text-transform:uppercase;padding:.22rem .65rem;border-radius:6px}
+  .event[data-p="p1"] .tag{background:rgba(62,207,178,.12);color:var(--p1)}
+  .event[data-p="p2"] .tag{background:rgba(227,179,65,.12);color:var(--p2)}
+  .event[data-p="p3"] .tag{background:rgba(240,114,109,.12);color:var(--p3)}
+  .event[data-p="p4"] .tag{background:rgba(167,139,250,.12);color:var(--p4)}
+  .hidden{display:none}
+
+  /* ---------- sections ---------- */
+  section{max-width:1060px;margin:0 auto;padding:5rem 1.5rem}
+  .sec-head{text-align:center;margin-bottom:3rem}
+  .sec-head h2{font-family:'Fraunces',serif;font-size:clamp(1.9rem,4vw,2.8rem);font-weight:900}
+  .sec-head p{color:var(--muted);margin-top:.6rem;max-width:52ch;margin-inline:auto}
+  .units{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.1rem}
+  .unit{background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:1.4rem 1.5rem;position:relative;overflow:hidden;transition:transform .25s,border-color .25s}
+  .unit:hover{transform:translateY(-4px);border-color:rgba(212,168,67,.5)}
+  .unit::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--ac)}
+  .unit .num{font-family:'Fraunces',serif;font-size:2.4rem;font-weight:900;color:var(--ac);opacity:.9;line-height:1}
+  .unit h3{font-family:'Fraunces',serif;font-size:1.15rem;font-weight:600;margin:.5rem 0 .3rem}
+  .unit .meta{font-size:.72rem;text-transform:uppercase;letter-spacing:.14em;color:var(--muted)}
+  .unit p{font-size:.86rem;color:var(--muted);margin-top:.55rem}
+  .themes{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:1.1rem}
+  .theme{border:1px solid var(--line);border-radius:14px;padding:1.3rem 1.4rem;background:var(--bg-soft)}
+  .theme .icon{font-size:1.5rem}
+  .theme h3{font-family:'Fraunces',serif;font-size:1.05rem;margin:.5rem 0 .25rem}
+  .theme p{font-size:.85rem;color:var(--muted)}
+
+  footer{border-top:1px solid var(--line);padding:2.5rem 1.5rem;text-align:center;
+    color:var(--muted);font-size:.82rem}
+  footer b{color:var(--gold);font-family:'Fraunces',serif}
+
+  @media(max-width:760px){
+    nav ul{display:none}
+    .spine{left:18px}
+    .event{width:100%;left:0 !important;text-align:left !important;padding:0 0 2.2rem 3.2rem}
+    .event .node{left:11px !important;right:auto !important}
+    .era{text-align:left;padding-left:3.2rem}
+  }
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+
+<nav>
+  <div class="brand">AP World<span> : Modern</span></div>
+  <ul>
+    <li><a href="#timeline">Timeline</a></li>
+    <li><a href="#units">Units</a></li>
+    <li><a href="#themes">Themes</a></li>
+  </ul>
+</nav>
+
+<header>
+  <div class="hero-bg"></div>
+  <svg class="compass" viewBox="0 0 100 100" fill="none" stroke="#d4a843" stroke-width=".35">
+    <circle cx="50" cy="50" r="48"/><circle cx="50" cy="50" r="38"/><circle cx="50" cy="50" r="20"/>
+    <path d="M50 2v96M2 50h96M16 16l68 68M84 16L16 84"/>
+    <path d="M50 12l4 34 34 4-34 4-4 34-4-34-34-4 34-4z" fill="#d4a843" fill-opacity=".25"/>
+  </svg>
+  <div class="kicker">1200 CE — Present</div>
+  <h1>Eight centuries of a <em>connected world</em></h1>
+  <p class="sub">From the Mongol khanates to the digital age — explore the empires, exchanges,
+    revolutions, and conflicts that shaped the modern world, organized around the
+    AP World History: Modern course framework.</p>
+  <div class="stats">
+    <div class="stat"><b>4</b><span>Periods</span></div>
+    <div class="stat"><b>9</b><span>Units</span></div>
+    <div class="stat"><b>6</b><span>Themes</span></div>
+    <div class="stat"><b>800+</b><span>Years</span></div>
+  </div>
+  <div class="scroll-cue">▼ Scroll the centuries</div>
+</header>
+
+<div class="filters" id="filters">
+  <button class="chip active" data-f="all"><span class="dot" style="background:linear-gradient(90deg,var(--p1),var(--p4))"></span>All Periods</button>
+  <button class="chip" data-f="p1"><span class="dot"></span>1200–1450</button>
+  <button class="chip" data-f="p2"><span class="dot"></span>1450–1750</button>
+  <button class="chip" data-f="p3"><span class="dot"></span>1750–1900</button>
+  <button class="chip" data-f="p4"><span class="dot"></span>1900–Present</button>
+</div>
+
+<div id="timeline">
+  <div class="spine"></div>
+
+  <div class="era" data-p="p1">
+    <div class="range">1200 – 1450</div>
+    <div class="name">Period 1 · The Global Tapestry &amp; Networks of Exchange</div>
+    <span class="pill">Units 1–2 · ~16–20% of exam</span>
+  </div>
+
+  <div class="event" data-p="p1"><span class="node"></span><div class="year">1206</div>
+    <div class="card"><h3>Genghis Khan Unites the Mongols</h3>
+    <p>Temüjin is proclaimed Genghis Khan, launching the largest contiguous land empire in history — and reconnecting Eurasia under the Pax Mongolica.</p>
+    <span class="tag">Unit 2 · Networks of Exchange</span></div></div>
+
+  <div class="event" data-p="p1"><span class="node"></span><div class="year">1235</div>
+    <div class="card"><h3>Sundiata Founds the Mali Empire</h3>
+    <p>Victory at Kirina establishes Mali's control of West African gold and salt, fueling trans-Saharan trade and the rise of Timbuktu.</p>
+    <span class="tag">Unit 1 · The Global Tapestry</span></div></div>
+
+  <div class="event" data-p="p1"><span class="node"></span><div class="year">1258</div>
+    <div class="card"><h3>Mongols Sack Baghdad</h3>
+    <p>Hulegu's forces destroy the Abbasid capital, ending the caliphate and shifting the center of the Islamic world toward new Turkic states.</p>
+    <span class="tag">Unit 2 · Networks of Exchange</span></div></div>
+
+  <div class="event" data-p="p1"><span class="node"></span><div class="year">1279</div>
+    <div class="card"><h3>Kublai Khan Completes Conquest of China</h3>
+    <p>The Yuan Dynasty rules all of China — foreign rule that adopts Chinese traditions while privileging Mongols, a classic case of cultural synthesis.</p>
+    <span class="tag">Unit 1 · The Global Tapestry</span></div></div>
+
+  <div class="event" data-p="p1"><span class="node"></span><div class="year">1324</div>
+    <div class="card"><h3>Mansa Musa's Hajj</h3>
+    <p>The Malian emperor's gold-laden pilgrimage to Mecca dazzles Cairo, advertises West African wealth, and deepens Islamic scholarship in the Sahel.</p>
+    <span class="tag">Unit 2 · Networks of Exchange</span></div></div>
+
+  <div class="event" data-p="p1"><span class="node"></span><div class="year">1347</div>
+    <div class="card"><h3>The Black Death Reaches Europe</h3>
+    <p>Bubonic plague travels the very trade routes that enriched Eurasia, killing a third of Europe — connectivity's deadly side effect.</p>
+    <span class="tag">Unit 2 · Networks of Exchange</span></div></div>
+
+  <div class="event" data-p="p1"><span class="node"></span><div class="year">1368</div>
+    <div class="card"><h3>Ming Dynasty Founded</h3>
+    <p>Zhu Yuanzhang expels the Mongols and restores Han Chinese rule, reviving Confucian civil service exams and rebuilding the Great Wall.</p>
+    <span class="tag">Unit 1 · The Global Tapestry</span></div></div>
+
+  <div class="event" data-p="p1"><span class="node"></span><div class="year">1405</div>
+    <div class="card"><h3>Zheng He's Treasure Voyages Begin</h3>
+    <p>Massive Ming fleets project power across the Indian Ocean from Southeast Asia to East Africa — decades before Europe's caravels.</p>
+    <span class="tag">Unit 2 · Networks of Exchange</span></div></div>
+
+  <div class="event" data-p="p1"><span class="node"></span><div class="year">1428</div>
+    <div class="card"><h3>Aztec Triple Alliance Forms</h3>
+    <p>Tenochtitlán, Texcoco, and Tlacopan unite, building an empire of tribute and trade centered on a lake-borne capital of 200,000 people.</p>
+    <span class="tag">Unit 1 · The Global Tapestry</span></div></div>
+
+  <div class="event" data-p="p1"><span class="node"></span><div class="year">1438</div>
+    <div class="card"><h3>Pachacuti Expands the Inca Empire</h3>
+    <p>The Inca knit the Andes together with roads, quipu record-keeping, and the mit'a labor system — an empire without wheels, writing, or markets.</p>
+    <span class="tag">Unit 1 · The Global Tapestry</span></div></div>
+
+  <div class="era" data-p="p2">
+    <div class="range">1450 – 1750</div>
+    <div class="name">Period 2 · Land-Based Empires &amp; Transoceanic Interconnections</div>
+    <span class="pill">Units 3–4 · ~24–30% of exam</span>
+  </div>
+
+  <div class="event" data-p="p2"><span class="node"></span><div class="year">1453</div>
+    <div class="card"><h3>Ottomans Capture Constantinople</h3>
+    <p>Mehmed II's cannons breach the Theodosian walls; the Byzantine Empire falls and a Gunpowder Empire claims the crossroads of two continents.</p>
+    <span class="tag">Unit 3 · Land-Based Empires</span></div></div>
+
+  <div class="event" data-p="p2"><span class="node"></span><div class="year">1492</div>
+    <div class="card"><h3>Columbus Reaches the Americas</h3>
+    <p>Two hemispheres collide. The Columbian Exchange moves crops, animals, people, and pathogens — remaking diets, demographics, and empires worldwide.</p>
+    <span class="tag">Unit 4 · Transoceanic Interconnections</span></div></div>
+
+  <div class="event" data-p="p2"><span class="node"></span><div class="year">1517</div>
+    <div class="card"><h3>Luther's Ninety-Five Theses</h3>
+    <p>The Protestant Reformation splinters Western Christendom, ignites religious wars, and — via the printing press — shows the power of new media.</p>
+    <span class="tag">Unit 3 · Land-Based Empires</span></div></div>
+
+  <div class="event" data-p="p2"><span class="node"></span><div class="year">1521</div>
+    <div class="card"><h3>Fall of Tenochtitlán</h3>
+    <p>Cortés, indigenous allies, and smallpox topple the Aztec Empire — the template for Spain's silver-rich American colonies and the casta system.</p>
+    <span class="tag">Unit 4 · Transoceanic Interconnections</span></div></div>
+
+  <div class="event" data-p="p2"><span class="node"></span><div class="year">1526</div>
+    <div class="card"><h3>Babur Founds the Mughal Empire</h3>
+    <p>Gunpowder and cavalry win Panipat. Under Akbar, the Mughals will govern a Hindu majority with pragmatic religious tolerance — for a while.</p>
+    <span class="tag">Unit 3 · Land-Based Empires</span></div></div>
+
+  <div class="event" data-p="p2"><span class="node"></span><div class="year">1545</div>
+    <div class="card"><h3>Silver Discovered at Potosí</h3>
+    <p>The Bolivian "mountain of silver" links the Americas, Europe, and Ming China into the first truly global economy — at brutal human cost.</p>
+    <span class="tag">Unit 4 · Transoceanic Interconnections</span></div></div>
+
+  <div class="event" data-p="p2"><span class="node"></span><div class="year">1603</div>
+    <div class="card"><h3>Tokugawa Shogunate Unifies Japan</h3>
+    <p>After a century of civil war, the Tokugawa impose order, restrict foreign contact to Nagasaki, and preside over 250 years of peace.</p>
+    <span class="tag">Unit 3 · Land-Based Empires</span></div></div>
+
+  <div class="event" data-p="p2"><span class="node"></span><div class="year">1644</div>
+    <div class="card"><h3>Qing Dynasty Established</h3>
+    <p>Manchu conquerors take Beijing and rule China as a minority elite, doubling the empire's size while enforcing the queue as a mark of submission.</p>
+    <span class="tag">Unit 3 · Land-Based Empires</span></div></div>
+
+  <div class="event" data-p="p2"><span class="node"></span><div class="year">1688</div>
+    <div class="card"><h3>England's Glorious Revolution</h3>
+    <p>Parliament asserts supremacy over the crown and a Bill of Rights follows — Enlightenment ideas of consent and contract get a real-world test.</p>
+    <span class="tag">Unit 4 · Maritime Empires &amp; Governance</span></div></div>
+
+  <div class="era" data-p="p3">
+    <div class="range">1750 – 1900</div>
+    <div class="name">Period 3 · Revolutions &amp; Consequences of Industrialization</div>
+    <span class="pill">Units 5–6 · ~24–30% of exam</span>
+  </div>
+
+  <div class="event" data-p="p3"><span class="node"></span><div class="year">1776</div>
+    <div class="card"><h3>American Declaration of Independence</h3>
+    <p>Enlightenment philosophy becomes political reality: natural rights and popular sovereignty justify breaking with the British Empire.</p>
+    <span class="tag">Unit 5 · Revolutions</span></div></div>
+
+  <div class="event" data-p="p3"><span class="node"></span><div class="year">1789</div>
+    <div class="card"><h3>The French Revolution Begins</h3>
+    <p>The Bastille falls and the Declaration of the Rights of Man follows — liberty, equality, and fraternity ripple outward across the Atlantic world.</p>
+    <span class="tag">Unit 5 · Revolutions</span></div></div>
+
+  <div class="event" data-p="p3"><span class="node"></span><div class="year">1804</div>
+    <div class="card"><h3>Haitian Independence</h3>
+    <p>The only successful slave revolt in history creates the first Black republic, terrifying slaveholders and inspiring abolitionists everywhere.</p>
+    <span class="tag">Unit 5 · Revolutions</span></div></div>
+
+  <div class="event" data-p="p3"><span class="node"></span><div class="year">1820s</div>
+    <div class="card"><h3>Latin American Independence</h3>
+    <p>Bolívar and San Martín liberate Spanish South America; creole elites take power, but colonial social hierarchies prove harder to overthrow.</p>
+    <span class="tag">Unit 5 · Revolutions</span></div></div>
+
+  <div class="event" data-p="p3"><span class="node"></span><div class="year">1839</div>
+    <div class="card"><h3>The First Opium War</h3>
+    <p>Britain forces China open at gunpoint. The Treaty of Nanjing begins the "century of humiliation" — unequal treaties, treaty ports, and spheres of influence.</p>
+    <span class="tag">Unit 6 · Consequences of Industrialization</span></div></div>
+
+  <div class="event" data-p="p3"><span class="node"></span><div class="year">1848</div>
+    <div class="card"><h3>The Communist Manifesto</h3>
+    <p>Marx and Engels answer industrial capitalism's miseries with class struggle — an idea that will redraw the map of the 20th century.</p>
+    <span class="tag">Unit 5 · Revolutions</span></div></div>
+
+  <div class="event" data-p="p3"><span class="node"></span><div class="year">1857</div>
+    <div class="card"><h3>Sepoy Rebellion in India</h3>
+    <p>A mutiny over greased cartridges becomes a mass uprising; Britain dissolves the East India Company and imposes direct rule — the Raj.</p>
+    <span class="tag">Unit 6 · Consequences of Industrialization</span></div></div>
+
+  <div class="event" data-p="p3"><span class="node"></span><div class="year">1868</div>
+    <div class="card"><h3>The Meiji Restoration</h3>
+    <p>Japan answers Western pressure by industrializing itself — railroads, conscription, constitution — becoming Asia's first modern great power.</p>
+    <span class="tag">Unit 6 · Consequences of Industrialization</span></div></div>
+
+  <div class="event" data-p="p3"><span class="node"></span><div class="year">1884</div>
+    <div class="card"><h3>The Berlin Conference</h3>
+    <p>European powers carve up Africa on paper — no Africans present. Within two decades, almost the entire continent is colonized.</p>
+    <span class="tag">Unit 6 · Consequences of Industrialization</span></div></div>
+
+  <div class="era" data-p="p4">
+    <div class="range">1900 – Present</div>
+    <div class="name">Period 4 · Global Conflict, Cold War &amp; Globalization</div>
+    <span class="pill">Units 7–9 · ~24–30% of exam</span>
+  </div>
+
+  <div class="event" data-p="p4"><span class="node"></span><div class="year">1914</div>
+    <div class="card"><h3>World War I Begins</h3>
+    <p>Alliances, nationalism, and industrial weaponry turn an assassination in Sarajevo into total war — and topple four empires by 1918.</p>
+    <span class="tag">Unit 7 · Global Conflict</span></div></div>
+
+  <div class="event" data-p="p4"><span class="node"></span><div class="year">1917</div>
+    <div class="card"><h3>The Russian Revolution</h3>
+    <p>Lenin's Bolsheviks seize power amid wartime collapse, creating the world's first communist state and a new pole in global politics.</p>
+    <span class="tag">Unit 7 · Global Conflict</span></div></div>
+
+  <div class="event" data-p="p4"><span class="node"></span><div class="year">1929</div>
+    <div class="card"><h3>The Great Depression</h3>
+    <p>A Wall Street crash becomes a global crisis, discrediting laissez-faire economics and feeding fascism in Germany, Italy, and Japan.</p>
+    <span class="tag">Unit 7 · Global Conflict</span></div></div>
+
+  <div class="event" data-p="p4"><span class="node"></span><div class="year">1939</div>
+    <div class="card"><h3>World War II Begins</h3>
+    <p>Germany invades Poland. The deadliest conflict in history follows — total war, the Holocaust, and the atomic bomb redefine humanity's capacity for destruction.</p>
+    <span class="tag">Unit 7 · Global Conflict</span></div></div>
+
+  <div class="event" data-p="p4"><span class="node"></span><div class="year">1945</div>
+    <div class="card"><h3>Hiroshima, Nagasaki &amp; the United Nations</h3>
+    <p>The nuclear age and a new international order begin in the same year — alongside a superpower rivalry that will divide the planet.</p>
+    <span class="tag">Unit 7 · Global Conflict</span></div></div>
+
+  <div class="event" data-p="p4"><span class="node"></span><div class="year">1947</div>
+    <div class="card"><h3>Indian Independence &amp; Partition</h3>
+    <p>The British Raj ends; India and Pakistan are born in a partition that displaces millions — decolonization's promise and trauma in one moment.</p>
+    <span class="tag">Unit 8 · Cold War &amp; Decolonization</span></div></div>
+
+  <div class="event" data-p="p4"><span class="node"></span><div class="year">1949</div>
+    <div class="card"><h3>The Chinese Communist Revolution</h3>
+    <p>Mao proclaims the People's Republic. The world's most populous nation joins the communist bloc, reshaping the Cold War in Asia.</p>
+    <span class="tag">Unit 8 · Cold War &amp; Decolonization</span></div></div>
+
+  <div class="event" data-p="p4"><span class="node"></span><div class="year">1962</div>
+    <div class="card"><h3>The Cuban Missile Crisis</h3>
+    <p>Thirteen days at the brink of nuclear war — the Cold War's most dangerous moment ends in negotiation and a hotline between superpowers.</p>
+    <span class="tag">Unit 8 · Cold War &amp; Decolonization</span></div></div>
+
+  <div class="event" data-p="p4"><span class="node"></span><div class="year">1989</div>
+    <div class="card"><h3>The Berlin Wall Falls</h3>
+    <p>Peaceful revolutions sweep Eastern Europe; within two years the Soviet Union itself dissolves and the Cold War ends without a shot between superpowers.</p>
+    <span class="tag">Unit 8 · Cold War &amp; Decolonization</span></div></div>
+
+  <div class="event" data-p="p4"><span class="node"></span><div class="year">1991</div>
+    <div class="card"><h3>The World Wide Web Goes Public</h3>
+    <p>As the USSR collapses, a new network is born. Digital globalization will move ideas, money, and culture at the speed of light.</p>
+    <span class="tag">Unit 9 · Globalization</span></div></div>
+
+  <div class="event" data-p="p4"><span class="node"></span><div class="year">1994</div>
+    <div class="card"><h3>Apartheid Ends in South Africa</h3>
+    <p>Nelson Mandela — prisoner turned president — wins the first multiracial election, capping the 20th century's long struggle against racial empire.</p>
+    <span class="tag">Unit 8 · Cold War &amp; Decolonization</span></div></div>
+
+  <div class="event" data-p="p4"><span class="node"></span><div class="year">2020</div>
+    <div class="card"><h3>The COVID-19 Pandemic</h3>
+    <p>A virus circles the globe in weeks — echoing the Black Death, but met with mRNA vaccines in under a year. Connectivity remains a double-edged sword.</p>
+    <span class="tag">Unit 9 · Globalization</span></div></div>
+</div>
+
+<section id="units">
+  <div class="sec-head">
+    <h2>The Nine Units</h2>
+    <p>The course framework at a glance, with approximate AP exam weighting for each unit.</p>
+  </div>
+  <div class="units">
+    <div class="unit" style="--ac:var(--p1)"><div class="num">1</div><h3>The Global Tapestry</h3><div class="meta">1200–1450 · 8–10%</div><p>State-building in Song China, Dar al-Islam, South &amp; Southeast Asia, the Americas, Africa, and Europe.</p></div>
+    <div class="unit" style="--ac:var(--p1)"><div class="num">2</div><h3>Networks of Exchange</h3><div class="meta">1200–1450 · 8–10%</div><p>The Silk Roads, the Mongol Empire, the Indian Ocean, trans-Saharan routes, and cultural diffusion.</p></div>
+    <div class="unit" style="--ac:var(--p2)"><div class="num">3</div><h3>Land-Based Empires</h3><div class="meta">1450–1750 · 12–15%</div><p>The Gunpowder Empires — Ottoman, Safavid, Mughal, Qing — and how they expanded, administered, and legitimized power.</p></div>
+    <div class="unit" style="--ac:var(--p2)"><div class="num">4</div><h3>Transoceanic Interconnections</h3><div class="meta">1450–1750 · 12–15%</div><p>European exploration, the Columbian Exchange, maritime empires, the Atlantic slave trade, and global silver flows.</p></div>
+    <div class="unit" style="--ac:var(--p3)"><div class="num">5</div><h3>Revolutions</h3><div class="meta">1750–1900 · 12–15%</div><p>The Enlightenment and the Atlantic revolutions — American, French, Haitian, Latin American — plus industrialization's start.</p></div>
+    <div class="unit" style="--ac:var(--p3)"><div class="num">6</div><h3>Consequences of Industrialization</h3><div class="meta">1750–1900 · 12–15%</div><p>Imperialism's new wave, economic imperialism in Asia, migration, and resistance from the Sepoy Rebellion to the Zulu.</p></div>
+    <div class="unit" style="--ac:var(--p4)"><div class="num">7</div><h3>Global Conflict</h3><div class="meta">1900–present · 8–10%</div><p>Two world wars, the Depression between them, mass atrocities, and the collapse of the old imperial order.</p></div>
+    <div class="unit" style="--ac:var(--p4)"><div class="num">8</div><h3>Cold War &amp; Decolonization</h3><div class="meta">1900–present · 8–10%</div><p>Superpower rivalry, proxy wars, newly independent states, and non-aligned movements across Asia and Africa.</p></div>
+    <div class="unit" style="--ac:var(--p4)"><div class="num">9</div><h3>Globalization</h3><div class="meta">1900–present · 8–10%</div><p>Technology, economics, environment, and culture in an interconnected world — and the debates over its winners and losers.</p></div>
+  </div>
+</section>
+
+<section id="themes">
+  <div class="sec-head">
+    <h2>Six Course Themes</h2>
+    <p>The threads to trace through every unit — and the lenses the exam expects you to use.</p>
+  </div>
+  <div class="themes">
+    <div class="theme"><div class="icon">🌍</div><h3>Humans &amp; the Environment (ENV)</h3><p>Disease, climate, migration, and how people reshape — and are reshaped by — their surroundings.</p></div>
+    <div class="theme"><div class="icon">🎭</div><h3>Cultural Developments (CDI)</h3><p>Religions, ideologies, arts, and sciences: how ideas spread, blend, and transform societies.</p></div>
+    <div class="theme"><div class="icon">🏛️</div><h3>Governance (GOV)</h3><p>How states form, expand, legitimize power, and decline — from khanates to nation-states.</p></div>
+    <div class="theme"><div class="icon">⚖️</div><h3>Economic Systems (ECN)</h3><p>Trade networks, labor systems, capitalism, and the long road to a global economy.</p></div>
+    <div class="theme"><div class="icon">👥</div><h3>Social Organization (SIO)</h3><p>Hierarchies of class, gender, race, and caste — how societies order themselves and who pushes back.</p></div>
+    <div class="theme"><div class="icon">⚙️</div><h3>Technology &amp; Innovation (TEC)</h3><p>From the compass and gunpowder to the steam engine and the internet — tools that change everything.</p></div>
+  </div>
+</section>
+
+<footer>
+  <b>AP World History: Modern</b> · Study companion · Built for exploration, not affiliated with the College Board
+</footer>
+
+<script>
+  // scroll progress
+  const bar = document.getElementById('progress');
+  addEventListener('scroll', () => {
+    const h = document.documentElement;
+    bar.style.width = (h.scrollTop / (h.scrollHeight - h.clientHeight) * 100) + '%';
+  }, {passive:true});
+
+  // reveal on scroll
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('show'); io.unobserve(e.target); }
+  }), {threshold:.15});
+  document.querySelectorAll('.event').forEach(el => io.observe(el));
+
+  // period filters
+  const chips = document.querySelectorAll('.chip');
+  chips.forEach(chip => chip.addEventListener('click', () => {
+    chips.forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    const f = chip.dataset.f;
+    document.querySelectorAll('.event, .era').forEach(el => {
+      const match = f === 'all' || el.dataset.p === f;
+      el.classList.toggle('hidden', !match);
+      if (match && el.classList.contains('event')) el.classList.add('show');
+    });
+  }));
+</script>
+</body>
+</html>
